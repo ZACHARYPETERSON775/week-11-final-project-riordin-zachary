@@ -1,4 +1,4 @@
-module logic{
+module logic(
     input A[7:0],
     input B[7:0],
     output CMP[7:0],
@@ -10,7 +10,7 @@ module logic{
     output XNOR[7:0],
     output INV[7:0],
     output NEG[7:0]
-}
+);
     //CMP
     
     assign AND = A & B;
