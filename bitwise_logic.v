@@ -1,17 +1,21 @@
 module logic(
-    input A[7:0],
-    input B[7:0],
-    output CMP[7:0],
-    output AND[7:0],
-    output OR[7:0],
-    output XOR[7:0],
-    output NAND[7:0],
-    output NOR[7:0],
-    output XNOR[7:0],
-    output INV[7:0],
-    output NEG[7:0]
+    input [7:0] A,
+    input [7:0] B,
+    output [7:0] CMP,
+    output [7:0] AND,
+    output [7:0] OR,
+    output [7:0] XOR,
+    output [7:0] NAND,
+    output [7:0] NOR,
+    output [7:0] XNOR,
+    output [7:0] INV,
+    output [7:0] NEG
 );
-    //CMP
+    compare(
+        .A(A),
+        .B(B),
+        .Y(CMP)
+    );
     
     assign AND = A & B;
     
