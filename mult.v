@@ -1,5 +1,4 @@
 module mult_12in(
-    input Enable,
     input [7:0] ADD, //0000
     input [7:0] SUB, //0001
     input [7:0] SHL, //0010
@@ -14,11 +13,25 @@ module mult_12in(
     input [7:0] INV, //1011
     input [7:0] NEG, //1100
     input [3:0] Sel, // Select Outputs
-    output [7:0] out // Output Data
+    output reg [7:0] out // Output Data
     );
     
-    assign link = Enable ? (Sel == 2'b00 ? ceo : 
-                Sel == 2'b01 ? me : 
-                Sel == 2'b10 ? fred : jill) : 4'b0000;
+    always @(Sel) begin
+        case (Sel)
+            'b0000: out <= ADD;
+            'b0001: out <= SUB;
+            'b0010: out <= SHL;
+            'b0011: out <= SHR;
+            'b0100: out <= CMP;
+            'b0101: out <= AND;
+            'b0110: out <= OR;
+            'b0111: out <= XOR;
+            'b1000: out <= NAND;
+            'b1001: out <= NOR;
+            'b1010: out <= XNOR;
+            'b1011: out <= INV;
+            'b1100: out <= NEG;
+        endcase
+    end
     
 endmodule
