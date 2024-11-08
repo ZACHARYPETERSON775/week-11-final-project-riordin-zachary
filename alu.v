@@ -1,6 +1,6 @@
 module alu(
     input [7:0] data,
-    input [3:0] op_sel, // Operation selector
+    input [3:0] select, // Operation selector
     input perform,
     input reset,
     output reg [7:0] A,
@@ -16,16 +16,7 @@ module alu(
     wire [7:0] ALShift;
     wire [7:0] ARShift;
     wire [7:0] AcompB;
-    wire [7:0] AandB;
-    wire [7:0] AorB;
-    wire [7:0] AxorB;
-    wire [7:0] AnandB;
-    wire [7:0] AnorB;
-    wire [7:0] AxnorB;
-    wire [7:0] NotA;
     wire [7:0] ATwos;
-    
-    
     
     // A twos_comp
     twos_comp twos_A(
@@ -58,11 +49,24 @@ module alu(
         .L(ALShift)
     );
     
-    memory(
-        .data(muxData),
-        .store(),
-        .clear(btnU),
-        .mem(Y)
-    );
-
+    always @(posedge perform, select) begin
+        if(perform) begin
+            case(select)
+                4'b0000: Y <= AplusB;
+                4'b0001: Y <= AminusB;
+                4'b0010: Y <= ALShift;
+                4'b0011: Y <= ARShift;
+                4'b0100: Y <= AcompB;
+                4'b0101: Y <= A & B;
+                4'b0110: Y <= A | B;
+                4'b0111: Y <= A ^ B;
+                4'b1000: Y <= ~(A & B);
+                4'b1001: Y <= ~(A | B);
+                4'b1010: Y <= ~(A ^ B);
+                4'b1011: Y <= ~A;
+                4'b1100: Y <= ATwos;
+                default: Y <= Y;
+            endcase
+        end
+    end
 endmodule
