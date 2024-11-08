@@ -7,13 +7,14 @@ module alu(
     output reg [7:0] B,
     output reg [7:0] Y
 );
+    //wire [7:0] wA = A;
+    //wire [7:0] wB = B;
     wire [7:0] AplusB;
     wire [7:0] AminusB;
-    wire [7:0] ALShift;
-    wire [7:0] ARShift;
     wire [7:0] AcompB;
     wire [7:0] ATwos;
     wire [7:0] BTwos;
+    reg [7:0] swap = 2'h00;
     
     // A twos_comp
     twos_comp twos_A(
@@ -40,20 +41,18 @@ module alu(
         .Y(AminusB)
     );
     
-    shifer shift(
-        .A(A),
-        .R(ARShift),
-        .L(ALShift)
-    );
-    
-    always @(posedge perform, select) begin
-        if(perform) begin
+    always @(posedge perform, posedge reset) begin
+        if(reset) begin
+            A <= 2'h00;
+            B <= 2'h00;
+            Y <= 2'h00;
+        end else begin
             case(select)
-                4'b0000: Y <= AplusB;
-                4'b0001: Y <= AminusB;
-                4'b0010: Y <= ALShift;
-                4'b0011: Y <= ARShift;
-                4'b0100: Y <= AcompB;
+                4'b0000: Y <= AplusB; // Not working
+                4'b0001: Y <= AminusB; // Not working
+                4'b0010: Y <= A << 1;
+                4'b0011: Y <= A >> 1;
+                4'b0100: Y <= AcompB; // Not working
                 4'b0101: Y <= A & B;
                 4'b0110: Y <= A | B;
                 4'b0111: Y <= A ^ B;
@@ -61,9 +60,13 @@ module alu(
                 4'b1001: Y <= ~(A | B);
                 4'b1010: Y <= ~(A ^ B);
                 4'b1011: Y <= ~A;
-                4'b1100: Y <= ATwos;
+                4'b1100: Y <= ATwos; // Not working
                 4'b1101: A <= Y;
-                4'b1110: begin B <= A; A <= B; end
+                4'b1110: begin // Not working
+                    swap <= B; 
+                    B <= A;
+                    A <= swap;
+                end
                 4'b1111: A <= data;
             endcase
         end

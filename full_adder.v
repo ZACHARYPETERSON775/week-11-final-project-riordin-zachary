@@ -7,5 +7,5 @@ module full_adder(
 );
     wire X = (A ^ B);
     assign Y = X ^ Cin;
-    assing Cout = (X & Cin) | (A & B);
+    assign Cout = (X & Cin) | (A & B);
 endmodule

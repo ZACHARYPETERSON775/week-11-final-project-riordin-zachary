@@ -5,7 +5,7 @@ module clock_div
 (
     input clock,
     input reset,
-    output div_clock
+    output reg div_clock
 );
 
     // 100 MHz input clock Divide by either 2^17 or use a counter based divider
@@ -24,32 +24,27 @@ module clock_div
     // divide clock by 2 during test bench runs or your tests will fail. This
     // will automatically happen for you if you use 2^N divider and the
     // BIT_COUNT parameter
+    wire [DIVIDE_BY :1] Din;
+    wire [DIVIDE_BY :0] Qout;
     
-    wire [DIVIDE_BY - 1:0] Din;
-    wire [DIVIDE_BY - 1:0] Quit;
-    
-    assign Din = ~Quit;
-    
-    dff dffO(
-        .clear(reset),
-        .clk(clock),
-        .preset(1),
-        .D(Din[0]),
-        .Q(Quit[0])
-    );
+    assign Qout[0] = clock;
     
     genvar i;
     generate
-        for (i = 1; i < DIVIDE_BY; i = i + 1)
-            dff dff_IN(
-                .clear(reset),
-                .clock(Quit[i-1]),
-                .preset(1),
+        for(i = 1; i <= DIVIDE_BY; i = i + 1) begin
+            dff dff_div(
+                .clk(Qout[i - 1]),
                 .D(Din[i]),
-                .Q(Quit[i])
+                .preset(1'b0),
+                .clear(reset),
+                .Q(Qout[i]),
+                .NotQ(Din[i])
             );
+        end
     endgenerate
     
-    assign div_clock = Quit[DIVIDE_BY - 1];
+    always @(*) begin
+        div_clock <= Qout[DIVIDE_BY];
+    end
     
 endmodule

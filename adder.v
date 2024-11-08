@@ -3,7 +3,7 @@ module adder(
     input [7:0] B,
     output [7:0] Y
 );
-    wire [8:0] carry = 0;
+    wire [8:0] carry = 9'b000000000;
     genvar i;
     generate
         for(i = 0; i < 8; i = i + 1) begin

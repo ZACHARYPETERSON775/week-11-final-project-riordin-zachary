@@ -8,19 +8,18 @@ module top(
     output [3:0] an
 );
     wire [7:0] Y;
+    wire clock;
+    wire [3:0] anode;
     
     alu alu_block(
         .data(sw[15:8]),
-        .op_sel(sw[3:0]),
+        .select(sw[3:0]),
         .perform(btnC),
         .reset(btnU),
         .A(led[15:8]),
         .B(led[7:0]),
         .Y(Y)
     );
-    
-    wire clock;
-    wire [3:0] anode;
     
     // Do lighting
     clock_div clock_d(
