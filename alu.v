@@ -7,9 +7,6 @@ module alu(
     output reg [7:0] B,
     output reg [7:0] Y
 );
-    wire [7:0] memA = A;
-    wire [7:0] memB = B;
-    wire [7:0] memY = Y;
     wire [7:0] AplusB;
     wire [7:0] AminusB;
     wire [7:0] ALShift;
@@ -17,27 +14,6 @@ module alu(
     wire [7:0] AcompB;
     wire [7:0] ATwos;
     wire [7:0] BTwos;
-    
-    memory memory_A(
-        .data(memA),
-        .store(1'b1),
-        .clear(1'b0),
-        .mem(memA)
-    );
-    
-    memory memory_B(
-        .data(),
-        .store(),
-        .clear(),
-        .mem()
-    );
-    
-    memory memory_C(
-        .data(),
-        .store(),
-        .clear(),
-        .mem()
-    );
     
     // A twos_comp
     twos_comp twos_A(
@@ -86,20 +62,9 @@ module alu(
                 4'b1010: Y <= ~(A ^ B);
                 4'b1011: Y <= ~A;
                 4'b1100: Y <= ATwos;
-                4'b1101: begin
-                    memory storeA(
-                        .data(Y),
-                        .store(1'b1),
-                        .clear(1'b0),
-                        .mem(A)
-                    );
-                end
-                4'b1110: begin
-                    
-                end
-                4'b1111: begin
-                    A <= data;
-                end
+                4'b1101: A <= Y;
+                4'b1110: begin B <= A; A <= B; end
+                4'b1111: A <= data;
             endcase
         end
     end
