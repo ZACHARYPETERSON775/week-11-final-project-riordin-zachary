@@ -3,17 +3,17 @@ module adder(
     input [7:0] B,
     output [7:0] Y
 );
-    wire [8:0] carry = 9'b000000000;
+    wire [7:0] carry = 8'b00;
     genvar i;
     generate
         for(i = 0; i < 8; i = i + 1) begin
-            full_adder loop(
+            full_adder add(
                 .A(A[i]),
                 .B(B[i]),
-                .Cin(carry[i]),
+                .Cin((i > 0) ? carry[i - 1] : 1'b0),
                 .Y(Y[i]),
-                .Cout(carry[i + 1])
-                );
+                .Cout(carry[i])
+            );
         end
     endgenerate
 endmodule

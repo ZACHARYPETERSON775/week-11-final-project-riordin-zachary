@@ -5,7 +5,6 @@ module full_adder(
     output Y,
     output Cout
 );
-    wire X = (A ^ B);
-    assign Y = X ^ Cin;
-    assign Cout = (X & Cin) | (A & B);
+    assign Y = A ^ B ^ Cin;
+    assign Cout = ((A ^ B) & Cin) | (A & B);
 endmodule

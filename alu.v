@@ -7,14 +7,11 @@ module alu(
     output reg [7:0] B,
     output reg [7:0] Y
 );
-    //wire [7:0] wA = A;
-    //wire [7:0] wB = B;
     wire [7:0] AplusB;
     wire [7:0] AminusB;
     wire [7:0] AcompB;
     wire [7:0] ATwos;
     wire [7:0] BTwos;
-    reg [7:0] swap = 2'h00;
     
     // A twos_comp
     twos_comp twos_A(
@@ -34,6 +31,7 @@ module alu(
         .B(B),
         .Y(AplusB)
     );
+    
     // A - B
     adder minus(
         .A(A),
@@ -62,10 +60,9 @@ module alu(
                 4'b1011: Y <= ~A;
                 4'b1100: Y <= ATwos; // Not working
                 4'b1101: A <= Y;
-                4'b1110: begin // Not working
-                    swap <= B; 
+                4'b1110: begin // Not working 
+                    A <= B;
                     B <= A;
-                    A <= swap;
                 end
                 4'b1111: A <= data;
             endcase
