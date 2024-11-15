@@ -56,7 +56,7 @@ module alu(
                 4'b0001: Y <= AminusB;
                 4'b0010: Y <= A << 1;
                 4'b0011: Y <= A >> 1;
-                4'b0100: Y <= AcompB; // Not working
+                4'b0100: Y <= AcompB;
                 4'b0101: Y <= A & B;
                 4'b0110: Y <= A | B;
                 4'b0111: Y <= A ^ B;
