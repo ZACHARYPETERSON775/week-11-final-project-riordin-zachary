@@ -6,7 +6,7 @@ module twos_comp(
     assign C[0] = X[0];
     assign Y[0] = X[0];
 
-    genvare i, Ci;
+    genvar i, Ci;
     generate
 	for(Ci = 1; Ci < 7; Ci = Ci + 1) begin
             assign C[Ci] = X[Ci] | C[Ci - 1];

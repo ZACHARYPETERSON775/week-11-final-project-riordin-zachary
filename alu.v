@@ -39,6 +39,12 @@ module alu(
         .Y(AminusB)
     );
     
+    compare comp(
+        .A(A),
+        .B(B),
+        .Y(AcompB)
+    );
+    
     always @(posedge perform, posedge reset) begin
         if(reset) begin
             A <= 2'h00;
@@ -46,8 +52,8 @@ module alu(
             Y <= 2'h00;
         end else begin
             case(select)
-                4'b0000: Y <= AplusB; // Not working
-                4'b0001: Y <= AminusB; // Not working
+                4'b0000: Y <= AplusB;
+                4'b0001: Y <= AminusB;
                 4'b0010: Y <= A << 1;
                 4'b0011: Y <= A >> 1;
                 4'b0100: Y <= AcompB; // Not working
@@ -58,9 +64,9 @@ module alu(
                 4'b1001: Y <= ~(A | B);
                 4'b1010: Y <= ~(A ^ B);
                 4'b1011: Y <= ~A;
-                4'b1100: Y <= ATwos; // Not working
+                4'b1100: Y <= ATwos;
                 4'b1101: A <= Y;
-                4'b1110: begin // Not working 
+                4'b1110: begin 
                     A <= B;
                     B <= A;
                 end

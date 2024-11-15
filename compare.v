@@ -6,13 +6,13 @@ module compare(
 
     always @(A, B) begin
         if (A > B) begin
-            Y <= 'b0000001;
+            Y <= 8'b00000001;
         end
         else if (B > A) begin
-            Y <= 'b1111111;
+            Y <= 8'b11111111;
         end
         else begin
-            Y <= 'b0000000;
+            Y <= 8'b00000000;
         end
     end
         
